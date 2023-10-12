@@ -25,3 +25,17 @@ La branche master correspond au code à la fin de la formation.
    - [Liste des logiciels/dépendances utiles à la formation] 
 2. Clonez ce dossier Repository sur votre machine locale (Mac), CMD (Windows), ou sur un outil GUI tel que SourceTree. 
 3. [Instructions spécifiques au cours] 
+
+
+### Formateur
+
+**Nom du formateur** 
+
+ Retrouvez mes autres formations sur [LinkedIn Learning][lil-URL-trainer].
+
+[0]: # (Replace these placeholder URLs with actual course URLs)
+[lil-course-url]: https://www.linkedin.com
+[lil-thumbnail-url]: https:
+[lil-URL-trainer]: https://
+
+[1]: # (End of FR-Instruction ###############################################################################################)

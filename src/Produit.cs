@@ -17,10 +17,7 @@ public class Produit
         [MemberNotNull(nameof(_ref))]
         private set
         {
-            if(string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentException("Le paramètre value est vide ou nul.", nameof(value)); 
-            }
+            ArgumentException.ThrowIfNullOrEmpty(value);
             _ref = value;
         }
         get => _ref;
@@ -31,10 +28,8 @@ public class Produit
         get => _prix;
         set
         {
-            if(value is <0 or >1_000_000)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value));
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(value);
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(value, 1_000_000);
             _prix = value;
         }
     }

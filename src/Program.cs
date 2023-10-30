@@ -2,9 +2,9 @@
 
 class Program
 {
-    static void Afficher(string[] liste)
+    static void Afficher(string[] liste, Range r)
     {
-        foreach (var c in liste)
+        foreach (var c in liste[r])
         {
             Console.WriteLine(c);
         }
@@ -12,11 +12,9 @@ class Program
 
     static void Main(string[] args)
     {
-        var couleurs = new string[] {
-            "rouge", "orange", "jaune", "vert", "bleu", "violet"
-        };
+        var couleurs = "rouge, orange, jaune, vert, bleu, violet".Split(", ");
 
-        Afficher(couleurs);
+        Afficher(couleurs, Range.All);
         Console.WriteLine();
 
         #region Boucle d'initialisation
@@ -27,6 +25,12 @@ class Program
             couleursMaj[i] = couleurs[i].ToUpper();
         }
         #endregion
+        Afficher(couleursMaj, Range.All);
+        Console.WriteLine();
 
+        couleurs[^1] = "Violet";
+        Afficher(couleurs, ..2);
+        Console.WriteLine("...");
+        Afficher(couleurs, ^2..);
     }
 }

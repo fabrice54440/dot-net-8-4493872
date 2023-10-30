@@ -4,14 +4,18 @@ class Program
 {
     static void Main(string[] args)
     {
-        var p0 = new Produit("A000");
-        var p1 = p0;
+        var p0 = new ProduitRec("A000", "Casserole", 20.50m);
+        var p1 = p0 with { Prix = p0.Prix * 1.1m };
 
-        p1.Prix *= 1.1m;
+        // p1.Prix *= 1.1m;
         Console.WriteLine("p0 : {0:.00}", p0.Prix);
     }
 
-    public class Produit
+    public record ProduitRec(string Ref, string Nom, decimal Prix)
+    {
+
+    }
+    public struct Produit
     {
         public Produit(string Ref)
         {
@@ -28,7 +32,7 @@ class Program
         }
 
         public string Ref { get; private set; }
-        public string Nom { get; init; }
+        public required string Nom { get; init; }
         public decimal Prix { get; set; }
     }
 }

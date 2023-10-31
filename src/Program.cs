@@ -5,6 +5,10 @@ class Program
     public record Pays(string Nom, decimal Superficie);
     public record Ville(string Nom, int Population, Pays Pays, double Latitude, double Longitude)
     {
+        public Ville(string Nom, Pays Pays, double Latitude, double Longitude) : this(Nom, 0, Pays, Latitude, Longitude)
+        {
+            Console.WriteLine("Création de la ville : {0}", Nom);
+        }
         public async Task<double> CalculerDistance(Ville autre)
         {
             var sindth = Math.Sin((autre.Latitude - Latitude) * Math.PI / 360);
@@ -17,8 +21,11 @@ class Program
             return km;
         }
 
-        public static async Task<double> CalculerDistance(Ville a, Ville b, Ville c)
+        public static async Task<double> CalculerDistance(List<Ville> villes, int ia, int ib, int ic)
         {
+            var a = villes[ia];
+            var b = villes[ib];
+            var c = villes[ic];
             var km = await a.CalculerDistance(b);
 
             km += await b.CalculerDistance(c);
@@ -81,32 +88,32 @@ class Program
         };
         var pays = listePays.ToDictionary(p => p.Nom);
         var villes = new List<Ville> {
-            new Ville("Athènes"          ,  3495000, pays["Grèce"]      , 37.9842, 23.7281),
-            new Ville("Barcelone"        ,  4849691, pays["Espagne"]    , 41.3825,  2.1769),
-            new Ville("Berlin"           ,  4666175, pays["Allemagne"]  , 52.5200, 13.4050),
-            new Ville("Birmingham"       ,  2570000, pays["Royaume-Uni"], 52.4800, -1.9025),
-            new Ville("Bruxelles"        ,  2050000, pays["Belgique"]   , 50.8467,  4.3525),
-            new Ville("Kiev"             ,  2957000, pays["Ukraine"]    , 50.4500, 30.5233),
-            new Ville("Lisbonne"         ,  2705000, pays["Portugal"]   , 38.7253, -9.1500),
-            new Ville("Londres"          ,  9046000, pays["Royaume-Uni"], 51.5072, -0.1275),
-            new Ville("Lyon"             ,  2259411, pays["France"]     , 45.7600,  4.8400),
-            new Ville("Minsk"            ,  2005000, pays["Biélorussie"], 53.9000, 27.5667),
-            new Ville("Madrid"           ,  6497000, pays["Espagne"]    , 40.4169, -3.7033),
-            new Ville("Manchester"       ,  2690000, pays["Royaume-Uni"], 53.4794, -2.2453),
-            new Ville("Milan"            ,  5270000, pays["Italie"]     , 45.4669,  9.1900),
-            new Ville("Moscou"           , 12410000, pays["Russie"]     , 55.7558, 37.6178),
-            new Ville("Naples"           ,  2198000, pays["Italie"]     , 40.8333, 14.2500),
-            new Ville("Paris"            , 10816000, pays["France"]     , 48.8567,  2.3522),
-            new Ville("Rome"             ,  3995000, pays["Italie"]     , 41.8931, 12.4828),
-            new Ville("Saint Pétersbourg",  5383000, pays["Russie"]     , 59.9500, 30.3167),
-            new Ville("Vienne"           ,  1901000, pays["Autriche"]   , 48.2083, 16.3725)
+            new Ville("Athènes"          , pays["Grèce"]      , 37.9842, 23.7281),
+            new Ville("Barcelone"        , pays["Espagne"]    , 41.3825,  2.1769),
+            new Ville("Berlin"           , pays["Allemagne"]  , 52.5200, 13.4050),
+            new Ville("Birmingham"       , pays["Royaume-Uni"], 52.4800, -1.9025),
+            new Ville("Bruxelles"        , pays["Belgique"]   , 50.8467,  4.3525),
+            new Ville("Kiev"             , pays["Ukraine"]    , 50.4500, 30.5233),
+            new Ville("Lisbonne"         , pays["Portugal"]   , 38.7253, -9.1500),
+            new Ville("Londres"          , pays["Royaume-Uni"], 51.5072, -0.1275),
+            new Ville("Lyon"             , pays["France"]     , 45.7600,  4.8400),
+            new Ville("Minsk"            , pays["Biélorussie"], 53.9000, 27.5667),
+            new Ville("Madrid"           , pays["Espagne"]    , 40.4169, -3.7033),
+            new Ville("Manchester"       , pays["Royaume-Uni"], 53.4794, -2.2453),
+            new Ville("Milan"            , pays["Italie"]     , 45.4669,  9.1900),
+            new Ville("Moscou"           , pays["Russie"]     , 55.7558, 37.6178),
+            new Ville("Naples"           , pays["Italie"]     , 40.8333, 14.2500),
+            new Ville("Paris"            , pays["France"]     , 48.8567,  2.3522),
+            new Ville("Rome"             , pays["Italie"]     , 41.8931, 12.4828),
+            new Ville("Saint Pétersbourg", pays["Russie"]     , 59.9500, 30.3167),
+            new Ville("Vienne"           , pays["Autriche"]   , 48.2083, 16.3725)
         };
 
         Console.WriteLine("Calcul : ");
         Task<double[]> dists = Task.WhenAll(
-            Ville.CalculerDistance(villes[2], villes[0], villes[4]),
-            Ville.CalculerDistance(villes[0], villes[4], villes[2]),
-            Ville.CalculerDistance(villes[0], villes[2], villes[4])
+            Ville.CalculerDistance(villes, 2, 0, 4),
+            Ville.CalculerDistance(villes, 0, 4, 2),
+            Ville.CalculerDistance(villes, 0, 2, 4)
         );
         var min = dists.Result.Min();
 

@@ -64,11 +64,26 @@ class Program
 
   public static void RéservéAuxPersonnesAuthentifiées()
   {
-    Console.WriteLine($"Bienvenue dans votre espace");
+    var identité = Thread.CurrentPrincipal?.Identity;
+
+    if (identité == null || !identité.IsAuthenticated)
+    {
+      throw new UnauthorizedAccessException("Non authentifié-e");
+    }
+    Console.WriteLine($"Bienvenue dans votre espace {identité.Name}");
   }
 
   public static void RéservéAuxAdmins()
   {
+    // var mandatWindows = Thread.CurrentPrincipal as WindowsPrincipal;
+
+    // if(mandatWindows.IsInRole(WindowsBuiltInRole.Administrator))
+    var mandat = Thread.CurrentPrincipal;
+
+    if (mandat == null || !mandat.IsInRole(Role.Admin.ToString()))
+    {
+      throw new UnauthorizedAccessException("Non admin");
+    }
     Console.WriteLine("Bienvenue aux admins");
   }
 

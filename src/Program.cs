@@ -12,18 +12,16 @@ class Program
 
         builder.ConfigureAppConfiguration((context, configuration) =>
         {
-            // context.Configuration
             var env = context.HostingEnvironment.EnvironmentName;
-
             configuration
-              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-              .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
         });
         builder.ConfigureServices((context, services) =>
         {
             services.AddHostedService(_ => new AppService(
-              context.Configuration.GetValue("options:msg", "ok") ?? @"/!\"
-            ));
+            context.Configuration.GetValue("options:msg", "ok") ?? "ok"
+        ));
         });
         using var host = builder.Build();
 

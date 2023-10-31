@@ -5,7 +5,7 @@ class Program
     public record Pays(string Nom, decimal Superficie);
     public record Ville(string Nom, int Population, Pays Pays, double Latitude, double Longitude)
     {
-        public double CalculerDistance(Ville autre)
+        public async Task<double> CalculerDistance(Ville autre)
         {
             var sindth = Math.Sin((autre.Latitude - Latitude) * Math.PI / 360);
             var sindld = Math.Sin((autre.Longitude - Longitude) * Math.PI / 360);
@@ -13,15 +13,15 @@ class Program
                     Math.Cos(Latitude * Math.PI / 180.0) * Math.Cos(autre.Latitude * Math.PI / 180.0);
             var km = 6371 * 2.0 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            Thread.Sleep((int)km);
+            await Task.Delay((int)km);
             return km;
         }
 
-        public static double CalculerDistance(Ville a, Ville b, Ville c)
+        public static async Task<double> CalculerDistance(Ville a, Ville b, Ville c)
         {
-            var km = a.CalculerDistance(b);
+            var km = await a.CalculerDistance(b);
 
-            km += b.CalculerDistance(c);
+            km += await b.CalculerDistance(c);
             Console.WriteLine($"{a.Nom} > {b.Nom} > {c.Nom} : {km:.00}km");
             return km;
         }
@@ -103,12 +103,12 @@ class Program
         };
 
         Console.WriteLine("Calcul : ");
-        double[] dists = {
+        Task<double[]> dists = Task.WhenAll(
             Ville.CalculerDistance(villes[2], villes[0], villes[4]),
             Ville.CalculerDistance(villes[0], villes[4], villes[2]),
             Ville.CalculerDistance(villes[0], villes[2], villes[4])
-        };
-        var min = dists.Min();
+        );
+        var min = dists.Result.Min();
 
         Console.WriteLine(min);
     }

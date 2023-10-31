@@ -50,7 +50,28 @@ class Program
       Console.WriteLine("Identifiant ou mot de passe inconnu");
       Thread.GetDomain().SetPrincipalPolicy(PrincipalPolicy.UnauthenticatedPrincipal);
     }
+
+    try
+    {
+      RéservéAuxPersonnesAuthentifiées();
+      RéservéAuxAdmins();
+    }
+    catch (UnauthorizedAccessException e)
+    {
+      Console.Error.WriteLine($"Accès refusé : {e.Message}");
+    }
   }
+
+  public static void RéservéAuxPersonnesAuthentifiées()
+  {
+    Console.WriteLine($"Bienvenue dans votre espace");
+  }
+
+  public static void RéservéAuxAdmins()
+  {
+    Console.WriteLine("Bienvenue aux admins");
+  }
+
 
   public record Utilisateur(string Identifiant, string HashMdp, Role[] Roles)
   {

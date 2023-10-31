@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 
 namespace Auth;
@@ -20,6 +21,8 @@ class Program
         };
   static void Main(string[] args)
   {
+    // Thread.GetDomain().SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+    // Console.WriteLine(Thread.CurrentPrincipal.Identity.Name);
     var annuaire = utilisateurs.ToDictionary(u => u.Identifiant.ToLowerInvariant());
 
     Console.Write("Identifiant : ");
@@ -37,10 +40,15 @@ class Program
         && utilisateur.Authentifier(identifiant, hashMdp))
     {
       Console.WriteLine("Connexion acceptée");
+      Thread.CurrentPrincipal = new GenericPrincipal(
+          new GenericIdentity(utilisateur.Identifiant),
+          utilisateur.Roles.Select(r => r.ToString()).ToArray()
+      );
     }
     else
     {
       Console.WriteLine("Identifiant ou mot de passe inconnu");
+      Thread.GetDomain().SetPrincipalPolicy(PrincipalPolicy.UnauthenticatedPrincipal);
     }
   }
 

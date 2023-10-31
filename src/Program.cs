@@ -6,12 +6,26 @@ class Program
     {
         CompteARebours compteAReboursA = new(5);
 
-        // compteAReboursA.Fini += (o, e) => Console.WriteLine("Compte à rebours terminé");
+        using (Timer timerA = new(_ => compteAReboursA.Tic(), null, 0, 1_000))
+        {
+            compteAReboursA.Fini += (o, e) => timerA.Change(
+                Timeout.Infinite,
+                Timeout.Infinite
+            );
+            Thread.Sleep(7_000);
+        }
 
-        compteAReboursA.Tic(); Thread.Sleep(1_000);
-        compteAReboursA.Tic(); Thread.Sleep(1_000);
-        compteAReboursA.Tic(); Thread.Sleep(1_000);
-        compteAReboursA.Tic(); Thread.Sleep(1_000);
-        compteAReboursA.Tic();
+        CompteARebours compteAReboursB = new(5);
+        
+        using System.Timers.Timer timerB = new()
+        {
+            AutoReset = true,
+            Interval = 1_000,
+            Enabled = true
+        };
+        compteAReboursB.Fini += (o, e) => timerB.Stop();
+        timerB.Elapsed += (o, e) => compteAReboursB.Tic();
+
+        Thread.Sleep(7_000);
     }
 }

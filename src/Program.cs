@@ -1,5 +1,7 @@
 ﻿namespace Collections;
 
+using System.Collections.Frozen;
+
 class Program
 {
     public record Pays(string Nom, decimal Superficie);
@@ -21,11 +23,11 @@ class Program
             return km;
         }
 
-        public static async Task<double> CalculerDistance(List<Ville> villes, int ia, int ib, int ic)
+        public static async Task<double> CalculerDistance(List<Lazy<Ville>> villes, int ia, int ib, int ic)
         {
-            var a = villes[ia];
-            var b = villes[ib];
-            var c = villes[ic];
+            var a = villes[ia].Value;
+            var b = villes[ib].Value;
+            var c = villes[ic].Value;
             var km = await a.CalculerDistance(b);
 
             km += await b.CalculerDistance(c);
@@ -86,27 +88,27 @@ class Program
             new Pays("Ukraine"           , 603628m),
             new Pays("Vatican"           , 0.4m)
         };
-        var pays = listePays.ToDictionary(p => p.Nom);
-        var villes = new List<Ville> {
-            new Ville("Athènes"          , pays["Grèce"]      , 37.9842, 23.7281),
-            new Ville("Barcelone"        , pays["Espagne"]    , 41.3825,  2.1769),
-            new Ville("Berlin"           , pays["Allemagne"]  , 52.5200, 13.4050),
-            new Ville("Birmingham"       , pays["Royaume-Uni"], 52.4800, -1.9025),
-            new Ville("Bruxelles"        , pays["Belgique"]   , 50.8467,  4.3525),
-            new Ville("Kiev"             , pays["Ukraine"]    , 50.4500, 30.5233),
-            new Ville("Lisbonne"         , pays["Portugal"]   , 38.7253, -9.1500),
-            new Ville("Londres"          , pays["Royaume-Uni"], 51.5072, -0.1275),
-            new Ville("Lyon"             , pays["France"]     , 45.7600,  4.8400),
-            new Ville("Minsk"            , pays["Biélorussie"], 53.9000, 27.5667),
-            new Ville("Madrid"           , pays["Espagne"]    , 40.4169, -3.7033),
-            new Ville("Manchester"       , pays["Royaume-Uni"], 53.4794, -2.2453),
-            new Ville("Milan"            , pays["Italie"]     , 45.4669,  9.1900),
-            new Ville("Moscou"           , pays["Russie"]     , 55.7558, 37.6178),
-            new Ville("Naples"           , pays["Italie"]     , 40.8333, 14.2500),
-            new Ville("Paris"            , pays["France"]     , 48.8567,  2.3522),
-            new Ville("Rome"             , pays["Italie"]     , 41.8931, 12.4828),
-            new Ville("Saint Pétersbourg", pays["Russie"]     , 59.9500, 30.3167),
-            new Ville("Vienne"           , pays["Autriche"]   , 48.2083, 16.3725)
+        var pays = listePays.ToFrozenDictionary(p => p.Nom);
+        var villes = new List<Lazy<Ville>> {
+            new Lazy<Ville>(() => new Ville("Athènes"          , pays["Grèce"]      , 37.9842, 23.7281)),
+            new Lazy<Ville>(() => new Ville("Barcelone"        , pays["Espagne"]    , 41.3825,  2.1769)),
+            new Lazy<Ville>(() => new Ville("Berlin"           , pays["Allemagne"]  , 52.5200, 13.4050)),
+            new Lazy<Ville>(() => new Ville("Birmingham"       , pays["Royaume-Uni"], 52.4800, -1.9025)),
+            new Lazy<Ville>(() => new Ville("Bruxelles"        , pays["Belgique"]   , 50.8467,  4.3525)),
+            new Lazy<Ville>(() => new Ville("Kiev"             , pays["Ukraine"]    , 50.4500, 30.5233)),
+            new Lazy<Ville>(() => new Ville("Lisbonne"         , pays["Portugal"]   , 38.7253, -9.1500)),
+            new Lazy<Ville>(() => new Ville("Londres"          , pays["Royaume-Uni"], 51.5072, -0.1275)),
+            new Lazy<Ville>(() => new Ville("Lyon"             , pays["France"]     , 45.7600,  4.8400)),
+            new Lazy<Ville>(() => new Ville("Minsk"            , pays["Biélorussie"], 53.9000, 27.5667)),
+            new Lazy<Ville>(() => new Ville("Madrid"           , pays["Espagne"]    , 40.4169, -3.7033)),
+            new Lazy<Ville>(() => new Ville("Manchester"       , pays["Royaume-Uni"], 53.4794, -2.2453)),
+            new Lazy<Ville>(() => new Ville("Milan"            , pays["Italie"]     , 45.4669,  9.1900)),
+            new Lazy<Ville>(() => new Ville("Moscou"           , pays["Russie"]     , 55.7558, 37.6178)),
+            new Lazy<Ville>(() => new Ville("Naples"           , pays["Italie"]     , 40.8333, 14.2500)),
+            new Lazy<Ville>(() => new Ville("Paris"            , pays["France"]     , 48.8567,  2.3522)),
+            new Lazy<Ville>(() => new Ville("Rome"             , pays["Italie"]     , 41.8931, 12.4828)),
+            new Lazy<Ville>(() => new Ville("Saint Pétersbourg", pays["Russie"]     , 59.9500, 30.3167)),
+            new Lazy<Ville>(() => new Ville("Vienne"           , pays["Autriche"]   , 48.2083, 16.3725))
         };
 
         Console.WriteLine("Calcul : ");

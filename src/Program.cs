@@ -1,0 +1,132 @@
+﻿namespace Collections;
+
+class Program
+{
+    public record Pays(string Nom, decimal Superficie);
+    public record Ville(string Nom, int Population, Pays Pays);
+    static void Main(string[] args)
+    {
+        var listePays = new Pays[] {
+            new Pays("Albanie"           , 28748m),
+            new Pays("Allemagne"         , 357578m),
+            new Pays("Arménie"           , 29743m),
+            new Pays("Autriche"          , 83870m),
+            new Pays("Belgique"          , 30528m),
+            new Pays("Biélorussie"       , 207600m),
+            new Pays("Bosnie-Herzégovine", 51129m),
+            new Pays("Bulgarie"          , 110910m),
+            new Pays("Chypre"            , 9251m),
+            new Pays("Croatie"           , 56542m),
+            new Pays("Danemark"          , 43094m),
+            new Pays("Espagne"           , 518000m),
+            new Pays("Estonie"           , 45226m),
+            new Pays("Finlande"          , 338145m),
+            new Pays("France"            , 643801m),
+            new Pays("Géorgie"           , 69700m),
+            new Pays("Grèce"             , 131940m),
+            new Pays("Hongrie"           , 93030m),
+            new Pays("Irlande"           , 70280m),
+            new Pays("Islande"           , 103000m),
+            new Pays("Italie"            , 301234m),
+            new Pays("Kosovo"            , 10887m),
+            new Pays("Lettonie"          , 64589m),
+            new Pays("Liechtenstein"     , 160m),
+            new Pays("Lituanie"          , 65200m),
+            new Pays("Luxembourg"        , 2586m),
+            new Pays("Macédoine du Nord" , 25333m),
+            new Pays("Malte"             , 316m),
+            new Pays("Moldavie"          , 33843m),
+            new Pays("Monaco"            , 2m),
+            new Pays("Monténégro"        , 13800m),
+            new Pays("Norvège"           , 324220m),
+            new Pays("Pays-Bas"          , 41526m),
+            new Pays("Pologne"           , 312685m),
+            new Pays("Portugal"          , 92042m),
+            new Pays("Roumanie"          , 237500m),
+            new Pays("Royaume-Uni"       , 244820m),
+            new Pays("Russie"            , 17075200m),
+            new Pays("Saint-Marin"       , 61m),
+            new Pays("Serbie"            , 77589m),
+            new Pays("Slovaquie"         , 48845m),
+            new Pays("Slovénie"          , 20273m),
+            new Pays("Suède"             , 450295m),
+            new Pays("Suisse"            , 41290m),
+            new Pays("Tchéquie"          , 78866m),
+            new Pays("Turquie"           , 783562m),
+            new Pays("Ukraine"           , 603628m),
+            new Pays("Vatican"           , 0.4m)
+        };
+
+        #region Ajout/Insertion
+        var andorre = new Pays("Andorre", 468m);
+
+        // ...
+        #endregion
+
+        #region Recherche
+        if (listePays.Contains(andorre))
+        {
+            Console.WriteLine("Andorre : Trouvé");
+        }
+        #endregion
+
+        #region Parcours
+        foreach (var p in listePays[..3])
+        {
+            Console.WriteLine(p);
+        }
+        Console.WriteLine("...");
+        foreach (var p in listePays[^3..])
+        {
+            Console.WriteLine(p);
+        }
+        #endregion
+
+        #region Dictionnaire
+        #region - Création
+        Dictionary<string, Pays> pays = new();
+        #endregion
+
+        #region - Accès
+        foreach (var p in listePays)
+        {
+            pays[p.Nom] = p;
+        }
+        #endregion
+
+        #region - Recherche par clé
+        if (pays.ContainsKey("Andorre"))
+        {
+            // Console.WriteLine("Andorre : Trouvé");
+        }
+        #endregion
+        #endregion
+
+        var villes = new Ville[] {
+            new Ville("Athènes"          ,  3495000, listePays[17]), // Grèce
+            new Ville("Barcelone"        ,  4849691, listePays[12]), // Espagne
+            new Ville("Berlin"           ,  4666175, listePays[ 1]), // Allemagne
+            new Ville("Birmingham"       ,  2570000, listePays[37]), // Royaume-Uni
+            new Ville("Bruxelles"        ,  2050000, listePays[ 5]), // Belgique
+            new Ville("Kiev"             ,  2957000, listePays[47]), // Ukraine
+            new Ville("Lisbonne"         ,  2705000, listePays[35]), // Portugal
+            new Ville("Londres"          ,  9046000, listePays[37]), // Royaume-Uni
+            new Ville("Lyon"             ,  2259411, listePays[15]), // France
+            new Ville("Minsk"            ,  2005000, listePays[ 6]), // Biélorussie
+            new Ville("Madrid"           ,  6497000, listePays[12]), // Espagne
+            new Ville("Manchester"       ,  2690000, listePays[37]), // Royaume-Uni
+            new Ville("Milan"            ,  5270000, listePays[21]), // Italie
+            new Ville("Moscou"           , 12410000, listePays[38]), // Russie
+            new Ville("Naples"           ,  2198000, listePays[21]), // Italie
+            new Ville("Paris"            , 10816000, listePays[15]), // France
+            new Ville("Rome"             ,  3995000, listePays[21]), // Italie
+            new Ville("Saint Pétersbourg",  5383000, listePays[38]), // Russie
+            new Ville("Vienne"           ,  1901000, listePays[ 4]), // Autriche
+        };
+
+        foreach (var v in villes)
+        {
+            Console.WriteLine(v);
+        }
+    }
+}

@@ -6,9 +6,10 @@ class Program
     public record Ville(string Nom, int Population, Pays Pays);
     static void Main(string[] args)
     {
-        var listePays = new List<Pays> {
+        List<Pays> listePays = new() {
             new Pays("Albanie"           , 28748m),
             new Pays("Allemagne"         , 357578m),
+            new Pays("Andorre"           , 468m),
             new Pays("Arménie"           , 29743m),
             new Pays("Autriche"          , 83870m),
             new Pays("Belgique"          , 30528m),
@@ -56,77 +57,38 @@ class Program
             new Pays("Ukraine"           , 603628m),
             new Pays("Vatican"           , 0.4m)
         };
-
-        #region Ajout/Insertion
-        var andorre = new Pays("Andorre", 468m);
-
-        listePays.Insert(2, andorre);
-        #endregion
-
-        #region Recherche
-        if (listePays.Contains(andorre))
-        {
-            Console.WriteLine("Andorre : Trouvé");
-        }
-        #endregion
-
-        #region Parcours
-        foreach (var p in listePays[..3])
-        {
-            Console.WriteLine(p);
-        }
-        Console.WriteLine("...");
-        foreach (var p in listePays[^3..])
-        {
-            Console.WriteLine(p);
-        }
-        #endregion
-
-        #region Dictionnaire
-        #region - Création
         Dictionary<string, Pays> pays = new();
-        #endregion
 
-        #region - Accès
         foreach (var p in listePays)
         {
             pays[p.Nom] = p;
         }
-        #endregion
-
-        #region - Recherche par clé
-        if (pays.ContainsKey("Andorre"))
-        {
-            Console.WriteLine("Andorre : Trouvé");
-        }
-        #endregion
-        #endregion
-
         var villes = new List<Ville> {
-            new Ville("Athènes"          ,  3495000, pays["Grèce"]),
-            new Ville("Barcelone"        ,  4849691, pays["Espagne"]),
-            new Ville("Berlin"           ,  4666175, pays["Allemagne"]),
-            new Ville("Birmingham"       ,  2570000, pays["Royaume-Uni"]),
-            new Ville("Bruxelles"        ,  2050000, pays["Belgique"]),
-            new Ville("Kiev"             ,  2957000, pays["Ukraine"]),
-            new Ville("Lisbonne"         ,  2705000, pays["Portugal"]),
-            new Ville("Londres"          ,  9046000, pays["Royaume-Uni"]),
-            new Ville("Lyon"             ,  2259411, pays["France"]),
-            new Ville("Minsk"            ,  2005000, pays["Biélorussie"]),
-            new Ville("Madrid"           ,  6497000, pays["Espagne"]),
-            new Ville("Manchester"       ,  2690000, pays["Royaume-Uni"]),
-            new Ville("Milan"            ,  5270000, pays["Italie"]),
-            new Ville("Moscou"           , 12410000, pays["Russie"]),
-            new Ville("Naples"           ,  2198000, pays["Italie"]),
-            new Ville("Paris"            , 10816000, pays["France"]),
-            new Ville("Rome"             ,  3995000, pays["Italie"]),
-            new Ville("Saint Pétersbourg",  5383000, pays["Russie"]),
-            new Ville("Vienne"           ,  1901000, pays["Autriche"]),
+            new Ville("Athènes"          ,  3495000, pays["Grèce"] ),
+            new Ville("Barcelone"        ,  4849691, pays["Espagne"] ),
+            new Ville("Berlin"           ,  4666175, pays["Allemagne"] ),
+            new Ville("Birmingham"       ,  2570000, pays["Royaume-Uni"] ),
+            new Ville("Bruxelles"        ,  2050000, pays["Belgique"] ),
+            new Ville("Kiev"             ,  2957000, pays["Ukraine"] ),
+            new Ville("Lisbonne"         ,  2705000, pays["Portugal"] ),
+            new Ville("Londres"          ,  9046000, pays["Royaume-Uni"] ),
+            new Ville("Lyon"             ,  2259411, pays["France"] ),
+            new Ville("Minsk"            ,  2005000, pays["Biélorussie"] ),
+            new Ville("Madrid"           ,  6497000, pays["Espagne"] ),
+            new Ville("Manchester"       ,  2690000, pays["Royaume-Uni"]  ),
+            new Ville("Milan"            ,  5270000, pays["Italie"] ),
+            new Ville("Moscou"           , 12410000, pays["Russie"] ),
+            new Ville("Naples"           ,  2198000, pays["Italie"] ),
+            new Ville("Paris"            , 10816000, pays["France"] ),
+            new Ville("Rome"             ,  3995000, pays["Italie"] ),
+            new Ville("Saint Pétersbourg",  5383000, pays["Russie"] ),
+            new Ville("Vienne"           ,  1901000, pays["Autriche"] )
         };
 
-        foreach (var v in villes)
-        {
-            Console.WriteLine(v);
-        }
+        // - Filtrer
+
+        // - Agréger
+
+        // - Convertir
     }
 }

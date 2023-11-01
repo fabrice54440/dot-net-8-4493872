@@ -1,0 +1,11 @@
+@TicketApi_HostAddress = http://localhost:5002
+
+GET {{TicketApi_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{TicketApi_HostAddress}}/todos/1
+Accept: application/json
+
+###

@@ -1,0 +1,49 @@
+﻿@page "/tickets"
+@attribute [StreamRendering(true)]
+@using Support
+
+<PageTitle>Tickets</PageTitle>
+
+<h1>Tickets</h1>
+
+<p>This component demonstrates showing data.</p>
+
+@if (tickets == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Titre</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in tickets)
+            {
+                <tr>
+                    <td>@t.Cree.ToShortDateString()</td>
+                    <td>@t.Titre</td>
+                    <td>@t.EtatCourant</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Ticket[]? tickets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var http = new HttpClient();
+
+        tickets = await http.GetFromJsonAsync<Ticket[]>($"http://localhost:5002/api/tickets");
+
+    }
+
+}

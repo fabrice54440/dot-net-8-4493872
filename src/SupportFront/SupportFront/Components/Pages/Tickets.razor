@@ -1,7 +1,11 @@
 ﻿@page "/tickets/{moi?}"
 @attribute [StreamRendering(true)]
 @using Support
+@using Microsoft.AspNetCore.Identity
+@using SupportFront.Data
 
+@inject AuthenticationStateProvider auth
+@inject UserManager<ApplicationUser> userManager
 @inject ISupportService support
 
 <PageTitle>Tickets</PageTitle>
@@ -18,7 +22,9 @@ else
 {
     <nav class="nav nav-tabs">
         <NavLink href="/tickets" class="nav-link" aria-current="page" Match="NavLinkMatch.All">Tout</NavLink>
-        <NavLink href="/tickets/moi" class="nav-link" aria-current="page" >Mes tickets</NavLink>
+        <AuthorizeView>
+            <NavLink href="/tickets/moi" class="nav-link" aria-current="page" >Mes tickets</NavLink>
+        </AuthorizeView>
     </nav>  
     <table class="table">
     <thead>
@@ -51,7 +57,13 @@ else
         tickets = await support.GetTicketsAsync();
         if (Moi is not null)
         {
-            tickets = tickets.Where(t => t.Email == "alice@dotnet.example");
+            var etat = await auth.GetAuthenticationStateAsync();
+            var utilisateur = await userManager.GetUserAsync(etat.User);
+
+            if (utilisateur is not null)
+            {
+                tickets = tickets.Where(t => t.Email == utilisateur.Email);
+            }
         }
     }
 

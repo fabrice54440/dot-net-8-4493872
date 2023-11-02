@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Support;
 using SupportFront.Client.Pages;
+using SupportFront.Client;
 using SupportFront.Components;
 using SupportFront.Data;
 using SupportFront.Identity;
@@ -31,8 +33,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
+// Utilisateur prédéfini : bob@dotnet.example / Bob@1234
 
 builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
+
+builder.Services.AddSingleton<ISupportService, SupportServiceApiClient>();
 
 var app = builder.Build();
 

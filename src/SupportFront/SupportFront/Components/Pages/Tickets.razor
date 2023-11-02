@@ -1,6 +1,8 @@
-﻿@page "/tickets"
+﻿@page "/tickets/{moi?}"
 @attribute [StreamRendering(true)]
-@using Support 
+@using Support
+
+@inject ISupportService support
 
 <PageTitle>Tickets</PageTitle>
 
@@ -14,36 +16,45 @@
 }
 else
 {
+    <nav class="nav nav-tabs">
+        <NavLink href="/tickets" class="nav-link" aria-current="page" Match="NavLinkMatch.All">Tout</NavLink>
+        <NavLink href="/tickets/moi" class="nav-link" aria-current="page" >Mes tickets</NavLink>
+    </nav>  
     <table class="table">
-        <thead>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Titre</th>
+            <th>Email</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in tickets)
+        {
             <tr>
-                <th>Date</th>
-                <th>Titre</th>
-                <th>Statut</th>
+                <td>@t.Cree.ToShortDateString()</td>
+                <td>@t.Titre</td>
+                <td>@t.Email</td>
+                <td>@t.EtatCourant</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in tickets)
-            {
-                <tr>
-                    <td>@t.Cree.ToShortDateString()</td>
-                    <td>@t.Titre</td>
-                    <td>@t.EtatCourant</td>
-                </tr>
-            }
+        }
         </tbody>
     </table>
 }
 
 @code {
-    private Ticket[]? tickets;
+    private IEnumerable<Ticket>? tickets;
 
     protected override async Task OnInitializedAsync()
     {
-        using var http = new HttpClient();
-
-        tickets = await http.GetFromJsonAsync<Ticket[]>($"https://didactic-train-g477pjjr9xcwp9v-5002.app.github.dev/api/tickets");
-
+        tickets = await support.GetTicketsAsync();
+        if (Moi is not null)
+        {
+            tickets = tickets.Where(t => t.Email == "alice@dotnet.example");
+        }
     }
 
+    [Parameter]
+    public string? Moi { get; set; }
 }

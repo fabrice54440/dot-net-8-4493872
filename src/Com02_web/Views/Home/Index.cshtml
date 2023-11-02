@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <form method='POST' enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="titre">Titre</label>
+            <input type="text" class="form-control" id="titre" name="Titre" aria-describedby="titleHelp"
+                placeholder="Titre de l'image">
+            <small id="titleHelp" class="form-text text-muted">Titre de l'image</small>
+        </div>
+        <div class="form-group">
+            <label for="photo">Image à téléverser</label>
+            <input type="file" class="form-control-file" id="photo" name="Photo">
+        </div>
+        <button type="submit" class="btn btn-primary">Ok</button>
+    </form>
+</div>

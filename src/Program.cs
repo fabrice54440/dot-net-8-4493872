@@ -33,28 +33,35 @@ class Program
         {
             t1[i] = i * 2;
         }
+        mem = Consommation("Tableau natif int[]", mem);
 
         var t2 = new List<int>();
         for (int i = 0; i < 10000; i++)
         {
             t2.Add(i * 2);
         }
+        mem = Consommation("List<int>", mem);
 
         var t3 = new List<int>(10000);
         for (int i = 0; i < 10000; i++)
         {
             t3.Add(i * 2);
         }
+        mem = Consommation("List<int>(capacity)", mem);
 
         var liste = GetListe(10000);
+        mem = Consommation("GetListe", mem);
 
         var liste2 = GetListeYield(10000);
+        mem = Consommation("GetListe (yield)", mem);
 
         Span<int> t = stackalloc int[1000];
         for (int i = 0; i < 1000; i++)
         {
             t[i] = i * 2;
         }
+
+        mem = Consommation("Stackalloc", mem);
     }
 
     static IEnumerable<int> GetListe(int taille)

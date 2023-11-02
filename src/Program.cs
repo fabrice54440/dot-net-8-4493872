@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Microsoft.Data.Sqlite;
 
 namespace Sql;
 
@@ -6,7 +7,42 @@ class Program
 {
     static void Main(string[] args)
     {
-        
+        try
+        {
+            using IDbConnection cnct = new SqliteConnection("Data Source=:memory:");
+
+            cnct.Open();
+
+            var cmd = cnct.CreateCommand();
+            cmd.CommandText = InitBase;
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = @"
+                    SELECT newsletter, nom, prenom 
+                    FROM utilisateurs 
+                    WHERE nom LIKE @recherche
+                    ORDER BY nom";
+
+            var param = cmd.CreateParameter();
+            param.ParameterName = "recherche";
+            param.Value = "A%";
+            cmd.Parameters.Add(param);
+            using (var u = cmd.ExecuteReader())
+            {
+                while (u.Read())
+                {
+                    Console.WriteLine(" [{0}] {1} {2}",
+                        u.GetBoolean(0) ? 'x' : ' ',
+                        u.GetString(1),
+                        u.GetString(2)
+                    );
+                }
+            }
+        }
+        catch (DataException e)
+        {
+            Console.Error.WriteLine(e.Message);
+        }
     }
     const string InitBase = @"create table utilisateurs (
             id INTEGER PRIMARY KEY,

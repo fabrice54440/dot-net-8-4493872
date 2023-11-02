@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics.Metrics;
 
 namespace App;
 
@@ -13,6 +14,7 @@ class Program
 
         builder.ConfigureServices((context, services) =>
         {
+            services.AddSingleton<Meter>(_ => new Meter(nameof(App), "1.0.0"));
             services.AddSingleton<IMessageProvider, IncMessageService>();
             services.AddHostedService<AppService>();
         });

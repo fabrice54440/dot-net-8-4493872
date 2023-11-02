@@ -1,18 +1,21 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace App;
 
 class AppService : BackgroundService
 {
-  public string Message { get; init; }
+  private IConfiguration ConfService { get; init; }
+  private IMessageProvider MsgService { get; init; }
 
-  public AppService(string msg) => Message = msg;
+  public AppService(IConfiguration conf, IMessageProvider msg)
+      => (ConfService, MsgService) = (conf, msg);
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
     while (!stoppingToken.IsCancellationRequested)
     {
-      Console.WriteLine(Message);
+      Console.WriteLine(MsgService.NextMessage);
       try
       {
         await Task.Delay(500);

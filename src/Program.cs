@@ -14,14 +14,13 @@ class Program
         {
             var env = context.HostingEnvironment.EnvironmentName;
             configuration
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true);
         });
         builder.ConfigureServices((context, services) =>
         {
-            services.AddHostedService(_ => new AppService(
-            context.Configuration.GetValue("options:msg", "ok") ?? "ok"
-        ));
+            services.AddSingleton<IMessageProvider, IncMessageService>();
+            services.AddHostedService<AppService>();
         });
         using var host = builder.Build();
 

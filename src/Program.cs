@@ -1,20 +1,36 @@
-﻿namespace CaptEx;
+﻿using System.Runtime.ExceptionServices;
+
+namespace CaptEx;
 
 class Program
 {
     static void AfficherEntiers(IEnumerable<string?> valeurs)
     {
+        List<Exception> errs = new();
         foreach (var val in valeurs)
         {
-            Console.WriteLine(int.Parse(val!));
+            try
+            {
+                Console.WriteLine(int.Parse(val!));
+            }
+            catch (Exception e)
+            {
+                errs.Add(e);
+            }
+        }
+        if (errs.Count > 0)
+        {
+            throw new AggregateException(errs);
         }
     }
     static void GestionCentralisée(Exception e)
     {
+        var infos = ExceptionDispatchInfo.Capture(e);
+
         Console.ForegroundColor = ConsoleColor.Red;
         Console.Error.WriteLine(e.Message);
         Console.Error.WriteLine(e.StackTrace);
-        throw e;
+        infos.Throw();
     }
     static void Main(string[] args)
     {
@@ -24,13 +40,13 @@ class Program
         {
             AfficherEntiers(valeurs);
         }
-        catch (Exception e)
+        catch (AggregateException e)
         {
-            Console.Error.WriteLine(e.Message);
+            Console.Error.WriteLine(String.Join(", ", e.InnerExceptions.Select(x => x.Message)));
         }
         try
         {
-            int.Parse("123");
+            int.Parse("toto");
         }
         catch (Exception e)
         {

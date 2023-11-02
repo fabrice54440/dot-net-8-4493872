@@ -5,9 +5,18 @@ namespace App;
 public class IncMessageService : IMessageProvider
 {
   private int inc = 0;
-  private string Prefix { get; init; }
-  public IncMessageService(IConfiguration conf)
-      => Prefix = conf.GetValue("options:msg", "ok") ?? "ok";
+  private string Prefix { get; init; } = "Ok";
+  public IncMessageService()
+  {
 
-  public string NextMessage => $"{Prefix} ({++inc})";
+  }
+
+  public string NextMessage
+  {
+    get
+    {
+      inc++;
+      return $"{Prefix} ({inc})";
+    }
+  }
 }

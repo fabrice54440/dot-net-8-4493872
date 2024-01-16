@@ -54,8 +54,8 @@ Si vous n'utilisez pas GitHub Codespaces :
 Retrouvez mes autres formations sur [LinkedIn Learning][lil-URL-trainer].
 
 [0]: # (Replace these placeholder URLs with actual course URLs)
-[lil-course-url]: https://www.linkedin.com
-[lil-thumbnail-url]: https:
+[lil-course-url]: https://www.linkedin.com/learning/l-essentiel-de-dot-net-8
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/D560DAQGPr1tqAtiAHA/learning-public-crop_675_1200/0/1705337370628?e=2147483647&v=beta&t=1FqPyDfkuLyCahBKX71TMBKwcZLSywG9soG7ao6NWaY
 [lil-URL-trainer]: https://www.linkedin.com/learning/instructors/sylvain-labasse
 
 [1]: # (End of FR-Instruction ###############################################################################################)

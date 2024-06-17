@@ -1,9 +1,13 @@
-﻿namespace Culture;
+﻿using System.Globalization;
+
+namespace Culture;
 
 class Program
 {
     static void Main(string[] args)
     {
+        var culture = CultureInfo.CreateSpecificCulture("fr-FR");
+        Thread.CurrentThread.CurrentCulture = culture;
         // Nombres
       var prix = 3.4m;
 
